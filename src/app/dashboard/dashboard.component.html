@@ -1,0 +1,112 @@
+<form (ngSubmit)="onSubmit(theForm)" #theForm="ngForm" novalidate>
+  <div class="row">
+    <div class="col-md-6">
+      <button type="button" class="btn btn-primary btn-sm" (click)="addOrEditState='Add'; openModal()">Add Stock</button>
+    </div>
+    <div class="col-md-6">
+      <label> Filter Stock Type
+          <select (change)="filterCategory(filteredCategory.value)" #filteredCategory>
+              <option value="0">Select</option>
+              <option *ngFor="let category of categories" value="{{category.name}}">{{category.name}}</option>
+          </select>
+      </label>
+    </div>
+  </div>
+</form>
+
+<!-- stock modal template -->
+<template #stockModal> 
+  <div class="modal-header">
+    <h4 class="modal-title">{{addOrEditState}} Stock</h4> 
+  </div>
+
+  <div class="modal-body">
+      <div class="form-group row">
+        <label class="col-2 col-form-label" class="col-2 col-form-label" for="symbol">Symbol:</label>
+        <div class="col-10">
+          <input class="form-control" id="symbol" name="activeStock.symbol" [(ngModel)]="activeStock.symbol" #symbol="ngModel" required>
+          <div [hidden]="symbol.valid || symbol.pristine" class="alert alert-danger">Stock symbol is required</div>          
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-2 col-form-label" for="activeStock.category">Category:</label>
+        <div class="col-10">
+          <select class="form-control" id="activeStock.category"  [(ngModel)]="activeStock.category">
+            <option value="0">Select</option>
+            <option *ngFor="let category of categories" value="{{category.name}}">{{category.name}}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-2 col-form-label" for="activeStock.name">Name:</label>
+        <div class="col-10">
+          <input type="text" class="form-control" id="activeStock.name" [(ngModel)]="activeStock.name" #stockName="ngModel" required>
+          <div [hidden]="stockName.valid || stockName.pristine" class="alert alert-danger">Stock name is required</div>  
+        </div>
+      </div>
+
+      <div class="form-group row">
+          <label class="col-2 col-form-label" for="activeStock.share">Share:</label>
+          <div class="col-10">
+            <input type="text" class="form-control" id="activeStock.share" [(ngModel)]="activeStock.share" required>
+          </div>
+      </div>
+
+      <div class="form-group row">
+          <label class="col-2 col-form-label" for="activeStock.datePurchased">Date:</label>
+          <div class="input-group col-8">          
+              <input ngbDatepicker class="form-control" id="activeStock.datePurchased" [(ngModel)]="activeStock.datePurchased" #d="ngbDatepicker">  
+              <div class="input-group-addon" (click)="d.toggle()" >
+                      <img src="img/calendar-icon.svg" style="width: 1rem; height: 1rem; cursor: pointer;"/>
+              </div>                            
+          </div>         
+      </div>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-info btn-sm" (click)="clearForm()">Clear</button>
+    <button type="button" class="btn btn-secondary btn-sm" (click)="cancelModal()">Cancel</button>
+    <button type="button" class="btn btn-primary btn-sm" [disabled]="!theForm.form.valid" (click)="saveModal()">Save</button>
+  </div>
+
+</template>
+
+<!-- END stock modal template -->
+
+<!--List stocks in table -->
+
+<div class="row">
+  <div class="col-md-12">
+    <div *ngIf="stocks">
+      <table class="table table-sm table-striped table-hover center">
+        <thead>
+          <tr>
+            <th>Symbol</th>
+            <th>Name</th>
+            <th>Share</th>
+            <th>Date Purchased</th>
+            <th>Category</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let stock of stocks">
+            <td>{{stock.symbol}}</td>
+            <td>{{stock.name}}</td>
+            <td>{{stock.share}}</td>
+            <td>{{formatForServer(stock.datePurchased)}}</td>
+            <td>{{stock.category}}</td>
+
+            <td>
+              <button type="button" class="btn btn-warning btn-sm" (click)="setActiveStock(stock); openModal()">Edit</button>
+              <button (click)="deleteStock(stock.$key)" class="btn btn-sm btn-danger">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<template ngbModalContainer></template>

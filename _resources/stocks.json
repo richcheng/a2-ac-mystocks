@@ -1,0 +1,23 @@
+[
+    {
+      "symbol": "IBM",
+      "name": "International Business Machine",
+      "share": 100,
+      "datePurchased": "1/1/2017",
+      "category": "Technology"
+    },
+    {
+      "symbol": "FB",
+      "name": "Facebook",
+      "share": 200,
+      "datePurchased": "1/1/2016",
+      "category": "Technology"
+    },
+    {
+      "symbol": "GOOG",
+      "name": "Google",
+      "share": 300,
+      "datePurchased": "1/1/2015",
+      "category": "Technology"
+    }	
+ ]
