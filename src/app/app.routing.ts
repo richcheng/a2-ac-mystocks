@@ -9,6 +9,8 @@ import {AboutComponent} from './about/about.component';
 const appRoutes: Routes = [
     {    
         path: '',
+        //redirectTo: '/dashboard',
+        //pathMatch: 'full'
         component: DashboardComponent
     },
 

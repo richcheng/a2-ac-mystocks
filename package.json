@@ -1,6 +1,12 @@
 {
   "name": "a2-ac-mystocks",
-  "version": "0.0.0",
+  "description": "Angular 2, Angular-cli, Bootstrap4, Angular-ui ng-bootstrap app",
+  "author": {
+    "name": "Rich Cheng",
+    "email": "rich@richcheng.com",
+    "url": "http://www.richcheng.com/"
+  },  
+  "version": "0.0.1",
   "license": "MIT",
   "angular-cli": {},
   "scripts": {

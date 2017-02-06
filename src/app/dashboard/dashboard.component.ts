@@ -1,11 +1,11 @@
 import {Component, TemplateRef, OnInit } from '@angular/core';
 import {NgForm, NgModel} from "@angular/forms";
-import {NgbModalRef, NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModalRef, NgbModal, NgbDateStruct, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {ViewChild} from "@angular/core";
 import {FirebaseService} from '../services/firebase.service';
 import {Stock} from '../stock';
 import {Category} from '../category'; 
-import {NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+
 import { DatePipe } from '@angular/common';
 
 @Component({
@@ -15,23 +15,25 @@ import { DatePipe } from '@angular/common';
   providers: [FirebaseService]
 })
 export class DashboardComponent implements OnInit{
-	@ViewChild("stockModal") private stockModal: TemplateRef<any>;  
+	@ViewChild("stockModalTemplate") private stockModal: TemplateRef<any>;  
+  dialog: NgbModalRef | null; 
+
   stocks:Stock[];
   categories:Category[];
   todayDate:string=new Date().toISOString().substring(0,10);
-  closeResult: string;
-	dialog: NgbModalRef | null; 
+
   activeStock:Stock; 
   activeKey:string;
   addOrEditState:string="";
   datePipe = new DatePipe('en-US');
+  stockNgbModalOptions:  NgbModalOptions = {backdrop:'static', keyboard:false};
 
   constructor(private _firebaseService:FirebaseService,
     private modalService: NgbModal) { }
   
-	isInvalid(input: NgModel, form: NgForm): boolean {
-		return !input.valid && (input.touched || form.submitted);
-	}
+	// isInvalid(input: NgModel, form: NgForm): boolean {
+	// 	return !input.valid && (input.touched || form.submitted);
+	// }
 	clearForm(){
     this.activeStock={
            symbol:"",
@@ -50,15 +52,14 @@ export class DashboardComponent implements OnInit{
 		}
 	}
 
-	openModal(): void {
+	openModal(addOrEditState:string): void {
 
+    this.addOrEditState = addOrEditState;
     if (this.addOrEditState  == "Add") {
-
-      this.initializeNewStock();
-      console.log("New Stock:");
-      console.log(this.activeStock);      
+      this.initializeNewStock();      
     }
-		this.dialog = this.modalService.open(this.stockModal);
+		this.dialog = this.modalService.open(this.stockModal, this.stockNgbModalOptions);
+    // this.dialog = this.modalService.open(templateContent,this.stockNgbModalOptions);
 	}
 	
  initializeNewStock() {
@@ -82,8 +83,6 @@ export class DashboardComponent implements OnInit{
 
 	setActiveStock(stock){
       this.addOrEditState="Edit";
-
-      console.log(stock);
       this.activeKey = stock.$key;
       var newStock:Stock = {
             symbol:stock.symbol,
@@ -130,7 +129,8 @@ export class DashboardComponent implements OnInit{
       this._firebaseService.deleteStock(key);
   }
 
-  onSubmit(){
+  onSubmit(form:NgForm):void {
+    console.log("submitted form values:", form.value);
     this.saveModal();
   }
 }
