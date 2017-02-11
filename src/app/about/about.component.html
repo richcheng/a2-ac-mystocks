@@ -1,14 +1,10 @@
+<h4>Technologies used in this apps:</h4>
 
-<h4>This CRUD app utilizes: </h4>
-
-
-<ul>
-     <li>Angular-cli</li>
-     <li>Angular 2</li>
-     <li>Bootstrap 4</li>
-     <li>angular-ui team's ng-bootstrap</li>
-     <li>NgbModal</li>     
-     <li>Firebase</li>        
-</ul>
+<div *ngIf="aboutItems">
+     <div class="row align-items-left" *ngFor="let aboutItem of aboutItems">
+          <div class="col-md-2"><i class="fa fa-search" aria-hidden="true">&nbsp;</i><a href="{{aboutItem.url}}" target="_blank">{{aboutItem.name}}</a></div>     
+          <div class="col-md-*"> {{aboutItem.note}}</div> 
+     </div>
+</div>
 
 

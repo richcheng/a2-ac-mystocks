@@ -1,4 +1,6 @@
 import {Component, TemplateRef, OnInit } from '@angular/core';
+import { BaseComponent } from '../common/base/base.component';
+import { Injector } from '@angular/core';
 import {NgForm, NgModel} from "@angular/forms";
 import {NgbModalRef, NgbModal, NgbDateStruct, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {ViewChild} from "@angular/core";
@@ -7,6 +9,22 @@ import {Stock} from '../stock';
 import {Category} from '../category'; 
 
 import { DatePipe } from '@angular/common';
+import { ToastrService, ToastrConfig  } from 'ngx-toastr';
+
+const toastrConfig: ToastrConfig = new ToastrConfig(
+      {
+        timeOut:5000,
+        closeButton:true,
+        enableHtml:true,
+        extendedTimeOut:1000,
+        progressBar:true,
+        toastClass:'toast',
+        positionClass:'toast-bottom-full-width',
+        messageClass:'toast-message',
+        tapToDismiss:false,
+        onActivateTick:false
+      }
+    )
 
 @Component({
   selector: 'app-dashboard',
@@ -14,7 +32,7 @@ import { DatePipe } from '@angular/common';
   styleUrls: ['./dashboard.component.css'],
   providers: [FirebaseService]
 })
-export class DashboardComponent implements OnInit{
+export class DashboardComponent extends BaseComponent implements OnInit{
 	@ViewChild("stockModalTemplate") private stockModal: TemplateRef<any>;  
   dialog: NgbModalRef | null; 
 
@@ -28,8 +46,12 @@ export class DashboardComponent implements OnInit{
   datePipe = new DatePipe('en-US');
   stockNgbModalOptions:  NgbModalOptions = {backdrop:'static', keyboard:false};
 
-  constructor(private _firebaseService:FirebaseService,
-    private modalService: NgbModal) { }
+  constructor(
+    private injector: Injector,
+    private _firebaseService:FirebaseService,
+    private modalService: NgbModal) { 
+          super(injector);
+    }
   
 	// isInvalid(input: NgModel, form: NgForm): boolean {
 	// 	return !input.valid && (input.touched || form.submitted);
@@ -100,11 +122,13 @@ export class DashboardComponent implements OnInit{
 
     if (this.addOrEditState == "Add")
     {  
-      this._firebaseService.addStock(this.activeStock);
+      this._firebaseService.addStock(this.activeStock)
+        //.then( () : void => { this.toasterService.pop('success', 'Add Stock', 'Stock has been created!'); });
+        .then( () : void => { this.toastrService.success('Stock has been created!','Add Stock', toastrConfig); });
     }
     else if(this.addOrEditState == "Edit")
     {
-      this._firebaseService.updateStock(this.activeKey, this.activeStock);
+      this._firebaseService.updateStock(this.activeKey, this.activeStock).then( () : void => { this.toastrService.success('Stock has been updated!', 'Update Stock', toastrConfig); });
     }
 		if ( this.dialog ) {
 			this.dialog.close();
@@ -113,6 +137,7 @@ export class DashboardComponent implements OnInit{
 	}
 
   ngOnInit(){
+    this.toastrService.info('Getting stocks from firebase db...', 'Retrieving stocks', toastrConfig);
     this._firebaseService.getStocks().subscribe(stocks => { this.stocks = stocks; });
     this._firebaseService.getCategories().subscribe(categories => {
       this.categories = categories;
@@ -126,11 +151,12 @@ export class DashboardComponent implements OnInit{
   }
      
   deleteStock(key){
-      this._firebaseService.deleteStock(key);
+      this._firebaseService.deleteStock(key)
+        .then( () : void => { this.toastrService.success('Stock has been deleted!', 'Delete Stock', toastrConfig); });
+            
   }
 
   onSubmit(form:NgForm):void {
-    console.log("submitted form values:", form.value);
     this.saveModal();
   }
 }

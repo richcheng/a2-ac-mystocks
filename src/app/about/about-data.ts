@@ -1,0 +1,54 @@
+export interface AboutItem {
+  name:string;
+  url:string;
+  note?:string;
+}
+
+export var aboutItems:AboutItem[] = [
+      {
+        'name':'firebase',
+        'url':'https://console.firebase.google.com',
+        'note':'Non-SQL db'
+      },
+      {
+        'name':'angularfire2',
+        'url':'https://github.com/angular/angularfire2',
+        'note':'Angular 2 library for Firebase'
+      },        
+      {
+        'name':'NodeJs',
+        'url':'https://nodejs.org/en/',
+        'note':'Node.js® is a JavaScript runtime built on Chrome\'s V8 JavaScript engine. Node.js uses an event-driven, non-blocking I/O model that makes it lightweight and efficient.'
+      },
+      {
+        'name':'Angular 2',
+        'url':'https://angular.io',
+        'note':'One framework. Mobile & desktop'
+      },
+      {
+        'name':'Angular-cli',
+        'url':'https://github.com/angular/angular-cli',
+        'note':'CLI for Angular applications based on the ember-cli project.'
+      },
+      {
+        'name':'ng-bootstrap',
+        'url':'https://ng-bootstrap.github.io/#/getting-started',
+        'note':'angular-ui team bootstrap 4 for angular2'
+      },
+      {
+        'name':'Font Awesome',
+        'url':'http://fontawesome.io/',
+        'note':'Font Awesome gives you scalable vector icons that can instantly be customized — size, color, drop shadow, and anything that can be done with the power of CSS'
+      },    
+      {
+        'name':'ngx-toastr: Toastr for Angular 2',
+        'url':'https://www.npmjs.com/package/ngx-toastr',
+        'note':'Toast Component Injection, is a Javascript library non-blocking notifications'
+      },    
+      {
+        'name':'Auth0',
+        'url':'https://auth0.com/docs/overview',
+        'note':'Auth0 is a service that abstracts how users authenticate to applications.'
+      }            
+            
+  ]; 

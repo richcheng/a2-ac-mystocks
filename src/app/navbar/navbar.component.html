@@ -1,11 +1,19 @@
 <nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse">
   <a class="navbar-brand" href="#">MyStocks</a>
-  <ul class="nav navbar-nav">
+  <ul class="navbar-nav mr-auto">
     <li class="nav-item active">
-      <a class="nav-link" routerLink="/">Dashboard</a>
+      <a class="nav-link" routerLink="/">Home</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/dashboard">Dashboard</a>
     </li>
     <li class="nav-item">
       <a class="nav-link" routerLink="/about">About</a>
     </li>
   </ul>
+  <ul class="navbar-nav justify-content-end">
+    <li class="nav-item"><a class="nav-link" href="#" (click)="auth.login()" *ngIf="!auth.authenticated()">Login</a></li> 
+    <li class="nav-item"><a class="nav-link" routerLink="/profile" *ngIf="auth.authenticated()">Profile</a></li> 
+    <li class="nav-item"><a class="nav-link" href="#" (click)="auth.logout()" *ngIf="auth.authenticated()">Logout</a></li>
+  </ul>    
 </nav>
