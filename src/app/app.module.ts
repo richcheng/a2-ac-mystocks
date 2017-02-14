@@ -28,6 +28,7 @@ import { MomentModule} from 'angular2-moment';
 import { HelperService } from './common/helpers.service';
 import { AuthGuard } from './auth.guard';
 import { Auth } from './services/auth.service';
+import { JsonFilesService } from './services/json-files.service';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp( new AuthConfig({}), http, options);
@@ -71,7 +72,8 @@ export const firebaseConfig = {
     HelperService,
     appRoutingProviders,
     Auth,
-    AuthGuard    
+    AuthGuard,
+    JsonFilesService    
   ],
   bootstrap: [AppComponent]
 })
