@@ -19,7 +19,7 @@ export class JsonFilesService{
   getAbouts(): Observable<AboutItem[]> {
     return this.http
       .get(this.aboutDataUrl)
-      .map(res => { return res.json(); });
+      .map(res => res.json());
   }
 
 }
