@@ -1,5 +1,5 @@
 import {ModuleWithProviders} from '@angular/core';
-import {Routes, RouterModule} from '@angular/router';
+import {Routes,Route, RouterModule} from '@angular/router';
 
 import {AppComponent} from './app.component';
 import {DashboardComponent} from './dashboard/dashboard.component';
@@ -9,11 +9,21 @@ import {HomeComponent} from './home/home.component';
 
 import {AuthGuard} from './auth.guard';
 
-const appRoutes: Routes = [
+const indexRoute:Route ={
+    path:'',
+    component:HomeComponent
+};
+
+const fallbackRoute:Route = {
+    path:'**',
+    component:HomeComponent
+};
+
+const appRoutes: Routes = [  
     {    
-        path: '',
+        path: 'home',
         component: HomeComponent
-    },
+    },    
     {    
         path: 'profile',
         component: ProfileComponent,        
@@ -27,7 +37,9 @@ const appRoutes: Routes = [
     {
        path:'about',
        component: AboutComponent
-    }
+    },
+    fallbackRoute,
+    indexRoute
 ];
 
 export const appRoutingProviders: any[]=[];
