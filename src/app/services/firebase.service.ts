@@ -3,16 +3,24 @@ import { AngularFire, FirebaseListObservable } from 'angularfire2';
 import 'rxjs/add/operator/map';
 import {Stock} from '../stock';
 import {Category} from '../category';
+import {AboutItem} from '../about-item'; 
 
 @Injectable()
 export class FirebaseService{
     stocks: FirebaseListObservable<Stock[]>;
     categories: FirebaseListObservable<Category[]>;
+    abouts: FirebaseListObservable<AboutItem[]>;
 
     constructor(private _af: AngularFire){
     
     }
     
+    getAbouts(){
+        this.abouts = this._af.database.list('/abouts') as 
+        FirebaseListObservable<AboutItem[]>
+        return this.abouts;
+    }   
+
     getStocks(category:string = null){
         if(category != null){
             this.stocks = this._af.database.list('/stocks', {

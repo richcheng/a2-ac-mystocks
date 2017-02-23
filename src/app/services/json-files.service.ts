@@ -5,11 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/do';  // for debugging
 import 'rxjs/add/operator/catch';
 
-export interface AboutItem {
-  name:string;
-  url:string;
-  note?:string;
-}
+import { AboutItem } from '../about-item';
 
 @Injectable()
 export class JsonFilesService{

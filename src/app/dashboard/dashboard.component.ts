@@ -48,14 +48,25 @@ export class DashboardComponent extends BaseComponent implements OnInit{
 
   constructor(
     private injector: Injector,
-    private _firebaseService:FirebaseService,
+    private firebaseService:FirebaseService,
     private modalService: NgbModal) { 
           super(injector);
     }
   
-	// isInvalid(input: NgModel, form: NgForm): boolean {
-	// 	return !input.valid && (input.touched || form.submitted);
-	// }
+  // isInvalid(form: NgForm): boolean {
+  //   return (form.invalid);
+  // }
+
+	openModal(addOrEditState:string): void {
+
+    this.addOrEditState = addOrEditState;
+    if (this.addOrEditState  == "Add") {
+      this.initializeNewStock();      
+    }
+		this.dialog = this.modalService.open(this.stockModal, this.stockNgbModalOptions);
+    // this.dialog = this.modalService.open(templateContent,this.stockNgbModalOptions);
+	}
+
 	clearForm(){
     this.activeStock={
            symbol:"",
@@ -72,16 +83,6 @@ export class DashboardComponent extends BaseComponent implements OnInit{
 		} catch (e) {
 			return '';
 		}
-	}
-
-	openModal(addOrEditState:string): void {
-
-    this.addOrEditState = addOrEditState;
-    if (this.addOrEditState  == "Add") {
-      this.initializeNewStock();      
-    }
-		this.dialog = this.modalService.open(this.stockModal, this.stockNgbModalOptions);
-    // this.dialog = this.modalService.open(templateContent,this.stockNgbModalOptions);
 	}
 	
  initializeNewStock() {
@@ -122,13 +123,13 @@ export class DashboardComponent extends BaseComponent implements OnInit{
 
     if (this.addOrEditState == "Add")
     {  
-      this._firebaseService.addStock(this.activeStock)
+      this.firebaseService.addStock(this.activeStock)
         //.then( () : void => { this.toasterService.pop('success', 'Add Stock', 'Stock has been created!'); });
         .then( () : void => { this.toastrService.success('Stock has been created!','Add Stock', toastrConfig); });
     }
     else if(this.addOrEditState == "Edit")
     {
-      this._firebaseService.updateStock(this.activeKey, this.activeStock).then( () : void => { this.toastrService.success('Stock has been updated!', 'Update Stock', toastrConfig); });
+      this.firebaseService.updateStock(this.activeKey, this.activeStock).then( () : void => { this.toastrService.success('Stock has been updated!', 'Update Stock', toastrConfig); });
     }
 		if ( this.dialog ) {
 			this.dialog.close();
@@ -138,20 +139,20 @@ export class DashboardComponent extends BaseComponent implements OnInit{
 
   ngOnInit(){
     this.toastrService.info('Getting stocks from firebase db...', 'Retrieving stocks', toastrConfig);
-    this._firebaseService.getStocks().subscribe(stocks => { this.stocks = stocks; });
-    this._firebaseService.getCategories().subscribe(categories => {
+    this.firebaseService.getStocks().subscribe(stocks => { this.stocks = stocks; });
+    this.firebaseService.getCategories().subscribe(categories => {
       this.categories = categories;
     });    
   }
    
   filterCategory(category){
-    this._firebaseService.getStocks(category).subscribe(stocks => {
+    this.firebaseService.getStocks(category).subscribe(stocks => {
       this.stocks = stocks;
     });
   }
      
   deleteStock(key){
-      this._firebaseService.deleteStock(key)
+      this.firebaseService.deleteStock(key)
         .then( () : void => { this.toastrService.success('Stock has been deleted!', 'Delete Stock', toastrConfig); });
             
   }

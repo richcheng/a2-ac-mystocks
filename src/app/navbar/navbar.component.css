@@ -6,6 +6,7 @@ a.active{
   font-weight: bold;
   font-style: italic;
   font-size: 18px;
+  border-top:2px solid yellow;
 }
 
 .brand-icon {
@@ -34,4 +35,8 @@ nav a {
 nav a:hover {
   background-color: yellow;
   color:red;
+}
+
+i {
+  margin-right: 4px;
 }
